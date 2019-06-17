@@ -11,8 +11,9 @@ Sub import()
     ' (ce qui est fait plus tard par LoadUTF8File()) on découpe le fichier toutes les 5000 lignes
     Dim nb_files As Integer: nb_files = SplitFile(file_path, 5000)
     
-    ' Ouverture d'une feuille de travail où seront rajoutés les résultats
+    ' Ouverture d'un Workbook où seront rajoutés les résultats
     Dim wb As Workbook: Set wb = Workbooks.Add
+    
     Dim ws As Worksheet
     Dim i As Integer
     Dim file_content As String
@@ -25,8 +26,7 @@ Sub import()
         
         Set ws = GetWorksheetForFilenameAndNum(wb, file_name, i)
         
-        ' Découpage du contenu du fichier suivant l'expression régulière et injection
-        ' dans la Worksheet
+        ' Découpage du contenu du fichier en "morceaux" de CSV et injection dans la Worksheet
         call InjectCsvChunksIntoWorksheet(GetCsvChunks(file_content), ws)
                             
     Next
@@ -102,6 +102,10 @@ End Function
 Function GetWorksheetForFilenameAndNum(ByRef wb As Workbook, ByVal file_name As String, ByVal num As Integer) As Worksheet
     Dim ws As Worksheet
 
+    ' J'en fais un peu trop ici en récupérant une feuille si elle existe déjà et la créant sinon.
+    ' Maintenant il me suffirait de la créer parce que je travaille toujours avec nouveau Workbok,
+    ' mais au début du développement je réutilisais toujours le même Workbook.
+    ' Je garde ce code uniquement pour avoir un (mauvais?) exemple de gestion d'erreur dans VBA
     On Error Resume Next
     Set ws = Nothing
     Set ws = wb.Sheets(file_name & " " & num)
