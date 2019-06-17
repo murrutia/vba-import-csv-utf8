@@ -103,7 +103,7 @@ Function GetWorksheetForFilenameAndNum(ByRef wb As Workbook, ByVal file_name As 
     Dim ws As Worksheet
 
     ' J'en fais un peu trop ici en récupérant une feuille si elle existe déjà et la créant sinon.
-    ' Maintenant il me suffirait de la créer parce que je travaille toujours avec nouveau Workbok,
+    ' Maintenant il me suffirait de la créer parce que je travaille toujours avec un nouveau Workbok,
     ' mais au début du développement je réutilisais toujours le même Workbook.
     ' Je garde ce code uniquement pour avoir un (mauvais?) exemple de gestion d'erreur dans VBA
     On Error Resume Next
@@ -155,7 +155,7 @@ Function InjectCsvChunksIntoWorksheet(ByRef matches As VBScript_RegExp_55.MatchC
     ' Parcours de chacun des blocs découpés précédemment
     For Each match In matches
     
-        ' La première sous partie du bloc sera le contenu de la cellule
+        ' La première sous-partie du bloc sera le contenu de la cellule
         cell_content = TrimQuotes(match.SubMatches(0))
         ws.Range(col_letter & row_nb).Value = cell_content
         
@@ -163,7 +163,7 @@ Function InjectCsvChunksIntoWorksheet(ByRef matches As VBScript_RegExp_55.MatchC
         col_letter = Chr(Asc(col_letter) + 1)
         
         ' Comme on lit le fichier en entier à cause du mode UTF-8 (et non pas ligne par ligne),
-        ' on repère les changements de ligne lorsque le 2ème sous bloc n'est pas une virgule
+        ' on repère les changements de ligne lorsque le 2ème sous-bloc n'est pas une virgule
         separator = match.SubMatches(1)
         If separator <> "," Then
             row_nb = row_nb + 1
